@@ -14,7 +14,7 @@ void setup() {
 void loop() {
   //prueba de librería
 
-  switch (mirobot.blueT()) {
+    switch (mirobot.blueT()) {//en función del caracter emitido por bluetooth hace varias acciones
     case 'A':
       mirobot.drive (0.25, 12);
       break;
@@ -28,39 +28,40 @@ void loop() {
       mirobot.turn (-0.125, 12);
       break;
     case '1':
-      led1 = !led1;
+      /*led1 = !led1;
       if (led1) {
-        mirobot.ledON(1);
+        mirobot.ledON(forward);
       }
       else {
-        mirobot.ledOFF(1);
-      }
+        mirobot.ledOFF(forward);
+      }*/
+      invierteLed(forward);
       break;
     case '2':
       led2 = !led2;
       if (led2) {
-        mirobot.ledON(2);
+        mirobot.ledON(left);
       }
       else {
-        mirobot.ledOFF(2);
+        mirobot.ledOFF(left);
       }
       break;
     case '3':
       led3 = !led3;
       if (led3) {
-        mirobot.ledON(3);
+        mirobot.ledON(backward);
       }
       else {
-        mirobot.ledOFF(3);
+        mirobot.ledOFF(backward);
       }
       break;
     case '4':
       led4 = !led4;
       if (led4) {
-        mirobot.ledON(4);
+        mirobot.ledON(right);
       }
       else {
-        mirobot.ledOFF(4);
+        mirobot.ledOFF(right);
       }
       break;
     case '5':
@@ -76,6 +77,12 @@ void loop() {
       // statements
   }
 
-
 }
 
+void invierteLed(int i){
+  if (mirobot.ledState(i)) {
+    mirobot.ledOFF(i);
+  } else {
+    mirobot.ledON(i);
+  }
+}
