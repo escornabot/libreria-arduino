@@ -1,6 +1,7 @@
 #include <escornabot.h>
 
 escornabot mirobot;
+boolean buzz = false;
 
 void setup() {
   Serial.begin (9600);
@@ -24,6 +25,16 @@ void loop() {
   else if (mirobot.blueT() == 'C') {
     mirobot.turnA (360, 15);
   }
+  else if (mirobot.blueT() == '5') {
+    buzz = ¡buzz;
+    if (buzz == true) {
+      mirobot.buzzON();
+    }
+    else {
+      mirobot.buzzOFF();
+    }
+  }
+
 
 
 }
