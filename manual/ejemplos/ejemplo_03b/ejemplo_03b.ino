@@ -11,27 +11,27 @@ void loop() {
 
   switch (mirobot.pushButton()) {
 
-  case forward://si pulsamos el botón delantero, se enciende led delantero, se mueve 1/4 de vuelta hacia delante, y se apaga el led delantero
+  case forward://si pulsamos el botón delantero, se enciende led delantero, se mueve 7 cm hacia delante, y se apaga el led delantero
     mirobot.ledON (forward);
-    mirobot.drive (0.25, 10);
+    mirobot.drive (7, 10);
     mirobot.ledOFF (forward);
     break;
 
-  case backward://si pulsamos el botón trasero, se enciende led trasero, se mueve 1/4 de vuelta hacia atrás, y se apaga el led trasero
+  case backward://si pulsamos el botón trasero, se enciende led trasero, se mueve 7 cm hacia atrás, y se apaga el led trasero
     mirobot.ledON (backward);
-    mirobot.drive (-0.25, 10);
+    mirobot.drive (-7, 10);
     mirobot.ledOFF (backward);
     break;
 
-  case right://si pulsamos el botón derecho, se enciende led derecho, se mueve 1/8 de vuelta hacia la derecha, y se apaga el led derecho
+  case right://si pulsamos el botón derecho, se enciende led derecho, gira 45º hacia la derecha, y se apaga el led derecho
     mirobot.ledON (right);
-    mirobot.turn (0.125, 10);
+    mirobot.turn (45, 10);
     mirobot.ledOFF (right);
     break;
 
-  case left://si pulsamos el botón izquierdo, se enciende led izquierdo, se mueve 1/8 de vuelta hacia la izquierda, y se apaga el led izquierdo
+  case left://si pulsamos el botón izquierdo, se enciende led izquierdo, gira 45º hacia la izquierda, y se apaga el led izquierdo
     mirobot.ledON (left);
-    mirobot.turn (-0.125, 10);
+    mirobot.turn (-45, 10);
     mirobot.ledOFF (left);
     break;
 
@@ -48,11 +48,8 @@ void loop() {
     {
       mirobot.ledOFF(i);
     }
-
+    break;
   }
 
 
 }
-
-
-

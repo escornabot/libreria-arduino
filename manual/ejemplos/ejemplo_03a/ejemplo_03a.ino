@@ -10,23 +10,18 @@ void loop() {
   //prueba de librería
 
   if (mirobot.pushButton() == forward) {
-    mirobot.driveD (10, 15);
+    mirobot.driveD (10, 12);
   }
   else if (mirobot.pushButton() == backward) {
-    mirobot.driveD (-10, 15);
+    mirobot.driveD (-10, 12);
   }
   else if (mirobot.pushButton() == right) {
-    mirobot.turnA (90, 15);
+    mirobot.turnA (90, 12);
   }
   else if (mirobot.pushButton() == left) {
-    mirobot.turnA (-90, 15);
+    mirobot.turnA (-90, 12);
   }
   else if (mirobot.pushButton() == central) {
-    mirobot.turnA (360, 15);
+    mirobot.turnA (360, 12);
   }
 }
-
-
-
-
-

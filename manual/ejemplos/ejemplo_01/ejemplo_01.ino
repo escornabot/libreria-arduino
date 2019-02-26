@@ -4,14 +4,14 @@ escornabot mirobot;//declara un objeto llamado mirobot de tipo escornabot
 
 void setup() {
   // put your setup code here, to run once:
-  /*mueve el robot 1/4 de vuelta hacia delante a una velocidad de 10 rpm*/
-  mirobot.drive (0.25, 10);
-  /*mueve el robot 1/4 de vuelta hacia detrás a una velocidad de 10 rpm*/
-  mirobot.drive (-0.25, 10);
-  /*gira el robot 1/8 de vuelta hacia delante a una velocidad de 10 rpm*/
-  mirobot.turn (0.125, 10);
-  /*gira el robot 1/8 de vuelta hacia delante a una velocidad de 10 rpm*/
-  mirobot.turn (-0.125, 10);
+  /*mueve el robot 8 cm hacia delante a una velocidad de 10 rpm*/
+  mirobot.driveD (8, 10);
+  /*mueve el robot 8 cm hacia atrás a una velocidad de 10 rpm*/
+  mirobot.driveD (-8, 10);
+  /*gira el robot 45 grados hacia la derecha a una velocidad de 10 rpm*/
+  mirobot.turnA (45, 10);
+  /*gira el robot 45 grados hacia la izquierda a una velocidad de 10 rpm*/
+  mirobot.turnA (-45, 10);
 
 }
 
