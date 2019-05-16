@@ -2,8 +2,8 @@
 *Prudencio Luna* y *Pedro Ruiz*
 
 # Aportaciones
-*Jose Antonio Vacas*
-*Maribel Ruiz Martínez*
+* *Jose Antonio Vacas*
+* *Maribel Ruiz Martínez*
 
 # Control de Versiones
 - 0.15 (16/04/2019): quinta versión, se puede mover los motores mediante procedimiento de medio paso (tipo 3) y se corrigen fallos en constructor con parámetros para elegir modos de paso.
@@ -97,7 +97,7 @@ void loop() {
       break;
 
     default://otro caso, si no pulsamos nada, no se mueve el robot
-      mirobot.Stop();
+      mirobot.driveD (0,0);
       break;
 
   }

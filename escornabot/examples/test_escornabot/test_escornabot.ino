@@ -59,7 +59,7 @@ void loop() {
       break;
 
     default://otro caso, si no pulsamos nada, no se mueve el robot
-      mirobot.Stop();
+      mirobot.driveD (0,0);
       break;
 
   }
