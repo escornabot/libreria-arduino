@@ -1,5 +1,7 @@
 /*
 Librería escornabot por Prudencio Luna y Pedro Ruiz
+V 0.15 (16/04/2019): quinta versión, se puede mover los motores mediante procedimiento de medio paso (tipo 3) y se corrigen fallos en constructor con parámetros para elegir modos de paso
+V 0.14 (14/04/2019): cuarta versión del programa, cambiado nombre de procedimiento stop por Stop, se arregla procedimiento versión en .h, cambios en procedimiento pushButton, cambios en archivo de ejemplo.
 V 0.13 (07/03/2018): tercera versión del programa, incorpora control de motores paso a paso (avances, retrocesos, giros, parada)
 , elección del tipo de excitación de bobinas, control de leds, zumbador, botonera y bluetooth.
 */
@@ -9,7 +11,7 @@ V 0.13 (07/03/2018): tercera versión del programa, incorpora control de motores
 
 // Declaración y asignación de variables privadas
 
-	int step [4][4] =//matriz que describe puesta en marcha de bobinas por defecto (4 posiciones)
+	int step [8][4] =//matriz que describe puesta en marcha de bobinas por defecto (4 posiciones)
 		{
 	  	{1, 0, 0, 0},
 	  	{0, 1, 0, 0},
@@ -17,9 +19,11 @@ V 0.13 (07/03/2018): tercera versión del programa, incorpora control de motores
 	  	{0, 0, 0, 1}
 		};
 
-	int stepsLap=2048;//nº de pasos que da en una vuelta
+	int stepsLap=2048;//nº de pasos que da en una vuelta (en paso completo)
 	int stepsDone=0;//cuenta los pasos dados
 	int coilPosition=0;// devuelve la posición de la bobina en cada paso (4 posiciones)
+	int nSteps=4;//numero de pasos que da por ciclo completo
+	int tstep1rpm=29297;//velocidad en rpm, 29297 es el nº de microsegundos que tardaría en dar 1 paso a 1rpm, 60/2048 y pasarlo a microsegundos
 
 /*Pinout*/
 	const int pinMotor[8]={2,3,4,5,6,7,8,9};//pines de motores
@@ -59,10 +63,10 @@ escornabot::escornabot() //si no se pasan parámetros al constructor por defecto
 }//escornabot
 
 /*
- escornabot constructor pasando tipo de paso de bobina 1 o 2.
+ escornabot constructor pasando tipo de paso de bobina 1, 2 o 3.( 1 y 2 de paso completo 3 de medio paso)
  */
 
-escornabot::escornabot(int kindStep) //aquí se construye el objeto escornabot con el tipo de paso (excitación de bobinas) 1 o 2
+escornabot::escornabot(int kindStep) //aquí se construye el objeto escornabot con el tipo de paso (excitación de bobinas) 2 (paso completo con dos bobinas) o 3 (medio paso)
 {
 //se inicializa las comunicaciones serie a 9600 baudios (para bluetooth)
 	Serial.begin (9600);//iniciamos las comunicaciones
@@ -72,31 +76,41 @@ escornabot::escornabot(int kindStep) //aquí se construye el objeto escornabot c
 	}
 //se definen los pines de los leds como salida
 	for(int i=0; i<4; i++){
-    pinMode(led[i], OUTPUT);
+    		pinMode(led[i], OUTPUT);
   	}
 //se define el pin del zumbador como salida
-    pinMode(buzz, OUTPUT);
+   	pinMode(buzz, OUTPUT);
 // se define el pin analógico de entrada de pulsadores tipo PULL UP
   	pinMode(pushButtons,INPUT_PULLUP);
 //comprueba el parámetro pasado de tipo de paso de bobina
 
-	if (kindStep==1) {// se excita una bobina cada vez
-		int step [4][4] =//matriz que describe orden de excitación de bobinas (4 posiciones)
-		{
-	  	{1, 0, 0, 0},
-	  	{0, 1, 0, 0},
-	  	{0, 0, 1, 0},
-	  	{0, 0, 0, 1}
-		};
-	}
-	if (kindStep==2) {// se excitan dos bobinas a la vez
-		int step [4][4] =//matriz que describe orden de excitación de bobinas (4 posiciones)
-		{
-	  	{1, 1, 0, 0},
+	
+	if (kindStep==2) {// se excitan dos bobinas a la vez en paso completo (más par más consumo)
+		/* Ahora la matriz debe cambiar a 		
+		{1, 1, 0, 0},
 	  	{0, 1, 1, 0},
 	  	{0, 0, 1, 1},
-	  	{1, 0, 0, 1}
-		};
+	  	{1, 0, 0, 1}*/			
+		step [0][1] =1;step [1][2]=1;step[2][3]=1;step [3][0]=1;//se cambian los 0 por 1 en la matriz para el paso completo con una bobina por paso
+	}
+
+	else if (kindStep==3) {//medio paso consumo y par intermedio a los anteriores movimiento más suave
+		/* Ahora la matriz de medio paso debe cambiar a
+		{1, 0, 0, 0},
+		{1, 1, 0, 0},
+		{0, 1, 0, 0},
+		{0, 1, 1, 0},
+		{0, 0, 1, 0},
+		{0, 0, 1, 1},
+		{0, 0, 0, 1},
+		{1, 0, 0, 1}*/
+		step[1][0]=1;step[2][1]=1;step[2][2]=0;//se cambian los 0 por 1 y los 1 por 0 en la matriz para el medio paso
+		step[3][1]=1;step[3][2]=1;step[3][3]=0;
+		step[4][2]=1;step[5][2]=1;step[5][3]=1;
+		step[6][3]=1;step[7][0]=1;step[7][3]=1;		
+		stepsLap=4096;
+		nSteps=8;
+		tstep1rpm=14648;//es el nº de microsegundos que tardaría en dar 1 paso a 1rpm, 60/4096 y pasarlo a microsegundos
 	}
 }//escornabot
 
@@ -111,23 +125,24 @@ void escornabot::drive (float laps, int speed) {//vueltas son el nº de vueltas 
 	if (laps>=0) {//si las vueltas son positivas las bobinas se excitan en el sentido de avance
 		while (int(laps*stepsLap)>=stepsDone)  {
      		stepsDone ++;
-     		coilPosition=stepsDone % 4;//calcula el resto para saber en la posición de bobina que está
-      		digitalWrite(pinMotor[0], step[coilPosition][3]);
-      		digitalWrite(pinMotor[4], step[coilPosition][0]);
-      		digitalWrite(pinMotor[1], step[coilPosition][2]);
-      		digitalWrite(pinMotor[5], step[coilPosition][1]);
-      		digitalWrite(pinMotor[2], step[coilPosition][1]);
-      		digitalWrite(pinMotor[6], step[coilPosition][2]);
-      		digitalWrite(pinMotor[3], step[coilPosition][0]);
-      		digitalWrite(pinMotor[7], step[coilPosition][3]);
-      		delayMicroseconds(29297/speed);//velocidad en rpm 29297 es el nº de microsegundos que tardaría en dar 2048 pasos (una vuelta) en un minuto
+     		coilPosition=stepsDone % nSteps;//calcula el resto para saber en la posición de bobina que está
+		//cuando un pin está en una fila de la matriz el del otro motor está a la inversa pin 2 col 4 pin 6 col 1 por ejemplo      		
+		digitalWrite(pinMotor[0], step[coilPosition][3]);//pin 2
+      		digitalWrite(pinMotor[4], step[coilPosition][0]);//pin 6
+      		digitalWrite(pinMotor[1], step[coilPosition][2]);//pin 3
+      		digitalWrite(pinMotor[5], step[coilPosition][1]);//pin 7
+      		digitalWrite(pinMotor[2], step[coilPosition][1]);//pin 4
+      		digitalWrite(pinMotor[6], step[coilPosition][2]);//pin 8
+      		digitalWrite(pinMotor[3], step[coilPosition][0]);//pin 5
+      		digitalWrite(pinMotor[7], step[coilPosition][3]);//pin 9
+      		delayMicroseconds(tstep1rpm/speed);
     	}
 	}
 
 	else {//si las vueltas son negativas las bobinas se excitan en el sentido de retroceso
 		while (int(-laps*stepsLap)>=stepsDone)  {
      		stepsDone ++;
-     		coilPosition=stepsDone % 4;
+     		coilPosition=stepsDone % nSteps;
       		digitalWrite(pinMotor[0], step[coilPosition][0]);
       		digitalWrite(pinMotor[4], step[coilPosition][3]);
       		digitalWrite(pinMotor[1], step[coilPosition][1]);
@@ -136,7 +151,7 @@ void escornabot::drive (float laps, int speed) {//vueltas son el nº de vueltas 
       		digitalWrite(pinMotor[6], step[coilPosition][1]);
       		digitalWrite(pinMotor[3], step[coilPosition][3]);
       		digitalWrite(pinMotor[7], step[coilPosition][0]);
-      		delayMicroseconds(29297/speed);
+      		delayMicroseconds(tstep1rpm/speed);
     	}
 
 	}
@@ -157,7 +172,7 @@ void escornabot::driveD (float distance, int speed) {//distancia es el nº de cm
 stop procedimiento de paro de los motores
  */
 
-void escornabot::stop () {
+void escornabot::Stop () {
 
 	for (int i=0; i<8; i++) {
 	digitalWrite (pinMotor[i],LOW);
@@ -175,7 +190,7 @@ void escornabot::turn (float laps, int speed) {//laps son el nº de vueltas a gi
 	if (laps>=0) {//si las vueltas son positivas provoca giro a la derecha moviendo rueda izquierda adelante y derecha atrás
 		while (int(laps*stepsLap)>=stepsDone)  {
 			stepsDone ++;
-			coilPosition=stepsDone % 4;
+			coilPosition=stepsDone % nSteps;
 			digitalWrite(pinMotor[0], step[coilPosition][0]);
 			digitalWrite(pinMotor[4], step[coilPosition][0]);
 			digitalWrite(pinMotor[1], step[coilPosition][1]);
@@ -184,7 +199,7 @@ void escornabot::turn (float laps, int speed) {//laps son el nº de vueltas a gi
 			digitalWrite(pinMotor[6], step[coilPosition][2]);
 			digitalWrite(pinMotor[3], step[coilPosition][3]);
 			digitalWrite(pinMotor[7], step[coilPosition][3]);
-			delayMicroseconds(29297/speed);
+			delayMicroseconds(tstep1rpm/speed);
 		}
 
 	}
@@ -192,7 +207,7 @@ void escornabot::turn (float laps, int speed) {//laps son el nº de vueltas a gi
 	else {//si las vueltas son negativas provoca giro a la izquierda moviendo rueda derecha adelante e izquierda atrás
 		while (int(-laps*stepsLap)>=stepsDone)  {
 			stepsDone ++;
-			coilPosition=stepsDone % 4;
+			coilPosition=stepsDone % nSteps;
 			digitalWrite(pinMotor[0], step[coilPosition][3]);
 			digitalWrite(pinMotor[4], step[coilPosition][3]);
 			digitalWrite(pinMotor[1], step[coilPosition][2]);
@@ -201,7 +216,7 @@ void escornabot::turn (float laps, int speed) {//laps son el nº de vueltas a gi
 			digitalWrite(pinMotor[6], step[coilPosition][1]);
 			digitalWrite(pinMotor[3], step[coilPosition][0]);
 			digitalWrite(pinMotor[7], step[coilPosition][0]);
-			delayMicroseconds(29297/speed);
+			delayMicroseconds(tstep1rpm/speed);
 		}
 
 	}
@@ -241,62 +256,64 @@ int  escornabot::ledState(int ledNumber){
 /*
  * buzzON procedimiento para encender zumbador
  * */
-void escornabot::buzzON(void){
+void escornabot::buzzON(){
   digitalWrite(buzz,HIGH);
 }//buzzON
 
 /*
  * buzzOFF procedimiento para apagar zumbador
  * */
-void escornabot::buzzOFF(void){
+void escornabot::buzzOFF(){
   digitalWrite(buzz,LOW);
 }//buzOFF
 
 /*
  * pushButton procedimiento para determinar el pulsador pulsado
  * */
-int escornabot::pushButton(void){
-  if(analogRead(pushButtons)>= 748 && analogRead(pushButtons)<=788) {//atras
-	delay (50);    
-	return 3;
+int escornabot::pushButton(){
+  int value=0;
+  if(analogRead(pushButtons)>=748 && analogRead(pushButtons)<=788) {//atras
+	value=3;
+	//delay(200);		
   }
-  if(analogRead(pushButtons)>= 492 && analogRead(pushButtons)<=532) {//adelante
-	delay (50);        
-	return 1;
+  else if(analogRead(pushButtons)>=492 && analogRead(pushButtons)<=532) {//adelante
+	value=1;
+	//delay(200);		
   }
-  if(analogRead(pushButtons)>= 862 && analogRead(pushButtons)<=902) {//derecha
-   delay (50);     
-   return 4;
+  else if(analogRead(pushButtons)>=862 && analogRead(pushButtons)<=902) {//derecha
+	value=4;
+	//delay(200);		       
   }
-  if(analogRead(pushButtons)>= 663 && analogRead(pushButtons)<=703) {//izquierda
-	delay (50);       
-	return 2;
+  else if(analogRead(pushButtons)>=663 && analogRead(pushButtons)<=703) {//izquierda
+	value=2;
+	//delay(200);		
   }
-  if(analogRead(pushButtons)>= 799 && analogRead(pushButtons)<=839) {//centro
-	delay (50);    
-    return 5;
+  else if(analogRead(pushButtons)>=799 && analogRead(pushButtons)<=839) {//centro
+	value=5;
+	//delay(200);		
   }
   else {
-    return 0;
+    	value=0;
   }
+
+  return value;
 }//pushButton
 
 /*
  * blueT procedimiento para saber el caracter que me han mandado por Bluetooth
  * */
-int escornabot::blueT(void){
-if (Serial.available()>0) {
+int escornabot::blueT(){
+	if (Serial.available()>0) {
 	    int dato=Serial.read();
 		return dato;
 	}
-else return 0;
-
+	else return 0;
 }//blueT
 
 /*
   version() procedimiento que devuelve la versión de la librería
 */
-int escornabot::version(void){
-  return 0.13;
+float escornabot::version(){
+  return 0.15;
 }
 

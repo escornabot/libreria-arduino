@@ -1,6 +1,9 @@
 #include <escornabot.h>
 
-escornabot mirobot;
+escornabot mirobot;//por defecto funciona a modo paso completo con activación de una sóla bobina en cada paso (menor consumo y menor par)
+// si ponemos mirobot(2), se activa el modo paso completo con activación de dos bobinas a la vez en cada paso (mayor consumo y mayor par)
+// si ponemos mirobot(3), se activa el modo medio paso (consumo y par intermedio con los casos anteriores y movimiento más suave)
+
 boolean led1 = false;
 boolean led2 = false;
 boolean led3 = false;
@@ -16,27 +19,27 @@ void loop() {
 
   switch (mirobot.pushButton()) {
 
-    case forward://si pulsamos el botón delantero, se enciende led delantero, se mueve 1/4 de vuelta hacia delante, y se apaga el led delantero
+    case forward://si pulsamos el botón delantero, se enciende led delantero, se mueve 8 cm hacia delante, y se apaga el led delantero
       mirobot.ledON (forward);
-      mirobot.drive (0.25, 10);
+      mirobot.driveD (8, 10);
       mirobot.ledOFF (forward);
       break;
 
-    case backward://si pulsamos el botón trasero, se enciende led trasero, se mueve 1/4 de vuelta hacia atrás, y se apaga el led trasero
+    case backward://si pulsamos el botón trasero, se enciende led trasero, se mueve 8 cm hacia atrás, y se apaga el led trasero
       mirobot.ledON (backward);
-      mirobot.drive (-0.25, 10);
+      mirobot.driveD (-8, 10);
       mirobot.ledOFF (backward);
       break;
 
-    case right://si pulsamos el botón derecho, se enciende led derecho, se mueve 1/8 de vuelta hacia la derecha, y se apaga el led derecho
+    case right://si pulsamos el botón derecho, se enciende led derecho, gira 45 grados hacia la derecha, y se apaga el led derecho
       mirobot.ledON (right);
-      mirobot.turn (0.125, 10);
+      mirobot.turnA (45, 10);
       mirobot.ledOFF (right);
       break;
 
-    case left://si pulsamos el botón izquierdo, se enciende led izquierdo, se mueve 1/8 de vuelta hacia la izquierda, y se apaga el led izquierdo
+    case left://si pulsamos el botón izquierdo, se enciende led izquierdo, se mueve 45 grados hacia la izquierda, y se apaga el led izquierdo
       mirobot.ledON (left);
-      mirobot.turn (-0.125, 10);
+      mirobot.turnA (-45, 10);
       mirobot.ledOFF (left);
       break;
 
@@ -53,6 +56,11 @@ void loop() {
       {
         mirobot.ledOFF(i);
       }
+      break;
+
+    default://otro caso, si no pulsamos nada, no se mueve el robot
+      mirobot.Stop();
+      break;
 
   }
 
@@ -71,12 +79,12 @@ void loop() {
       break;
     case '1':
       /*led1 = !led1;
-      if (led1) {
+        if (led1) {
         mirobot.ledON(forward);
-      }
-      else {
+        }
+        else {
         mirobot.ledOFF(forward);
-      }*/
+        }*/
       invierteLed(forward);
       break;
     case '2':
@@ -121,10 +129,10 @@ void loop() {
 
 }
 
-void invierteLed(int i){
+void invierteLed(int i) {
   if (mirobot.ledState(i)) {
-		mirobot.ledOFF(i);
-	} else {
-		mirobot.ledON(i);
-	}
+    mirobot.ledOFF(i);
+  } else {
+    mirobot.ledON(i);
+  }
 }
