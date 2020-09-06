@@ -315,7 +315,7 @@ int escornabot::blueT(){
   version() procedimiento que devuelve la versión de la librería
 */
 float escornabot::version(){
-  return 0.15;
+  return 0.20;
 }
 
 //A propuesta de Antonio Gómez
