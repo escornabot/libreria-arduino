@@ -48,17 +48,24 @@ class escornabot {
 	float version();
 
 	//A propuesta de Antonio Gómez
+	//procedimiento que configura los pines de los sensores infrarrojos
 	void infrared(int izq,int der);
-
+	//procedimiento que configura los pines del sensor de ultrasonidos
 	void us(int trig, int echo);
+	//procedimiento que devuelve la distancia en cm del sensor de ultrasonidos
 	long distance();
+	//procedimiento que nos devuelve true o false si el sensor de ir derecho está a negro
 	bool blackRight();
+	//procedimiento que nos devuelve true o false si el sensor de ir izquierdo está a negro
 	bool blackLeft();
+	//procedimiento que nos devuelve true o false si el sensor de ir derecho está a blanco
 	bool whiteRight();
+	//procedimiento que nos devuelve true o false si el sensor de ir izquierdo está a blanco
 	bool whiteLeft();
-  void buzzer(int pin);
-  void tono(int frequency, int time);
-
+	//procedimiento para indicar el pin al que se conecta un zumbador	
+	void buzzer(int pin);
+	//procedimiento para indicar la frecuencia y duración del sonido del zumbador
+	void tono(int frequency, int time);
 
   //Definición de elementos privados
   private:
