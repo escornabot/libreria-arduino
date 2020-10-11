@@ -45,7 +45,7 @@ La librería debemos cargar en arduino por los métodos tradicionales, incluyend
 - **objetoEscornabot.tono(frecuencia, duración)**: emite un sonido en el zumbador configurado anteriormente, de una cierta frecuencia y duración.
 
 
-### Ejemplo de código de test
+### Ejemplo test
 ~~~
 #include <escornabot.h>
 
@@ -187,6 +187,45 @@ void invierteLed(int i) {
 }
 ~~~
 
+### Ejemplo us ###
+~~~
+#include <escornabot.h>
+
+escornabot mirobot;
+boolean funciona = false;
+
+void setup() {
+  mirobot.us(11, 12); //configuramos los pines trigger y echo
+}
+
+void loop() {
+
+  compruebaBoton();
+
+  if (funciona == true) {
+    mirobot.driveD(-5, 10);
+
+    if (mirobot.distance() <= 15) {
+      mirobot.driveD (5, 10);
+      mirobot.turnA (-45, 10);
+    }
+  }
+
+  else if (funciona == false) {
+    mirobot.Stop();
+  }
+
+}
+
+void compruebaBoton () {
+  if (mirobot.pushButton() == right) {
+    funciona = !funciona;
+    delay (300);
+  }
+}
+~~~
+
+
 # Piezas para sensores
 
-Os enlazo el repositorio [escornabot con sensores](https://github.com/pedroruizf/escornabot_sensores) dónde hay alojadas las piezas para poder incorporar sensores a escornabot.
+Os enlazo el repositorio [Piezas escornabot](https://github.com/plunax/Piezas-escornanbot) dónde hay alojadas las piezas para poder incorporar sensores a escornabot.
