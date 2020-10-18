@@ -42,7 +42,7 @@ La librería debemos cargar en arduino por los métodos tradicionales, incluyend
 - **objetoEscornabot.us(pin trigger, pin echo)**: configura los pines trigger y echo de un sensor de ultrasonidos.
 - **objetoEscornabot.distance()**: devuelve la distancia en cm a la que tetecta un objeto el sensor de ultrasonidos definido previamente.
 - **objetoEscornabot.buzzer( pin_zumbador)**: configura el pin al que se conecta el zumbador.
-- **objetoEscornabot.tono(frecuencia, duración)**: emite un sonido en el zumbador configurado anteriormente, de una cierta frecuencia y duración.
+- **objetoEscornabot.tono(frecuencia, duración)**: emite un sonido en el zumbador configurado anteriormente, de una cierta frecuencia en Hz y duración en ms.
 
 
 ### Ejemplo test
