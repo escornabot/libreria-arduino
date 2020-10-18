@@ -270,7 +270,29 @@ void compruebaBoton () {
   }
 
 ~~~
+### Ejemplo buzzer
+~~~
+#include <escornabot.h>
 
+escornabot miescorni;
+
+void setup() {
+
+  miescorni.buzzer(10);
+
+}
+
+void loop() {
+
+  for (int x = 0; x < 1000; x = x + 100) {
+    miescorni.tono(x, 500);
+  }
+
+  for (int x = 1000; x >=0; x = x - 100) {
+    miescorni.tono(x, 500);
+  }
+}
+~~~
 # Piezas para sensores
 
 Os enlazo el repositorio [Piezas escornabot](https://github.com/plunax/Piezas-escornanbot) de @plunax (*Prudencio Luna*) dónde están alojadas las piezas para poder incorporar sensores a escornabot.
