@@ -1,11 +1,13 @@
 # Autoría
-*Prudencio Luna* y *Pedro Ruiz*
+*Prudencio Luna*, *Pedro Ruiz*
 
 # Aportaciones
+* *Antonio Gómez*
 * *Jose Antonio Vacas*
 * *Maribel Ruiz Martínez*
 
 # Control de Versiones
+- 0.20 (04/09/2020): sexta versión, puede controlar sensores como ultrasonidos e infrarrojos.
 - 0.15 (16/04/2019): quinta versión, se puede mover los motores mediante procedimiento de medio paso (tipo 3) y se corrigen fallos en constructor con parámetros para elegir modos de paso.
 - 0.14 (14/04/2019):cambio de nombre de procedimiento stop por Stop, se arregla procedimiento versión en .h, cambios en procedimiento pushButton, cambios en archivo de ejemplo. Limpieza de código.
 - 0.13 (08/03/2017): se añade funciones driveD (mueve por distancia en cm) y turnA (gira por ángulos).
@@ -13,14 +15,14 @@
 - 0.11 (19/11/2017): se añade procedimiento blueT(), para conocer el dato recibido por bluetooth.
 - 0.1 (8/11/2017): primera versión del programa, incorpora control de motores paso a paso (avances, retrocesos, giros, parada), elección del tipo de excitación de bobinas, control de leds, zumbador y botonera.
 # Librería para arduino Escornabot
-Repositorio para albergar librería para manejar de forma amigable los motores paso a paso de Escornabot.
+Repositorio para albergar librería para programar de forma amigable escornabot.
 
 ![](images/escornabot.jpg "escornabot")
 ## Antecedentes
-Unos de los problemas de escornabot es la ausencia de instrucciones amigables en arduino para controlar sus elementos (motores paso a paso, botonera, leds y zumbador), todo ello pensando en el acercamiento del uso de dicho robot para estudiantes de secundaria. Por este motivo desde el club de Tecnología, programación y robótica de Granada nos planteamos desarrollar una librería para dicho fin.
+Unos de los problemas de escornabot era la ausencia de instrucciones amigables en arduino para controlar sus elementos (motores paso a paso, botonera, leds y zumbador, e incluso la adición de sensores), todo ello pensando en el acercamiento del uso de dicho robot para estudiantes de secundaria. Por este motivo desde el Club de Robótica de Granada nos planteamos desarrollar una librería para dicho fin.
 ## Librería
 La librería debemos cargar en arduino por los métodos tradicionales, incluyendo el zip o copiandola descomprimida en la carpeta "libraries" de arduino.
-### procedimientos
+### Procedimientos
 - **objetoEscornabot.drive (vueltas, velocidad)**: Sirve para avanzar o retroceder. Se mueve el número de vueltas indicado, si son negativas va en el sentido contrario. La velocidad se da rpm
 - **objetoEscornabot.driveD (distancia, velocidad)**: Igual que el anterior pero le pasamos la cantidad de cm que queremos que se mueva.
 - **objetoEscornabot.turn (vueltas, velocidad)**: Sirve para girar. Se indica como antes el número de vueltas o fracción a girar, si son positivas gira en un sentido y negativas en el contrario. La velocidad se da en rpm.
@@ -33,8 +35,19 @@ La librería debemos cargar en arduino por los métodos tradicionales, incluyend
 - **objetoEscornabot.buzzOFF ()**: apaga el zumbador.
 - **objetoEscornabot.pushButton()**: devuelve el valor del botón pulsado o la posición en inglés. 1 o forward (delantero), 3 o backward (trasero), 4 o right (derecho), 2 o left (izquierdo), 5 o central (central).
 - **objetoEscornabot.blueT()**: devuelve el valor numérico correspondiente a el carácter enviado por bluetooth a escornabot.
+- **objetoEscornabot.infrared(pin izquierdo, pin derecho)**: configura los pines para los sensores izquierdo y derecho .
+- **objetoEscornabot.blackRight()**: devuelve true si el sensor derecho infrarrojo está a negro, false cuando no está a negro.
+- **objetoEscornabot.blackLeft()**: devuelve true si el sensor izquierdo infrarrojo está a negro, false cuando no está a negro.
+- **objetoEscornabot.whiteRight()**: devuelve true si el sensor derecho infrarrojo está a blanco, false cuando no está a blanco.
+- **objetoEscornabot.whiteLeft()**: devuelve true si el sensor izquierdo infrarrojo está a blanco, false cuando no está a blanco.
+- **objetoEscornabot.us(pin trigger, pin echo)**: configura los pines trigger y echo de un sensor de ultrasonidos.
+- **objetoEscornabot.distance()**: devuelve la distancia en cm a la que detecta un objeto el sensor de ultrasonidos definido previamente.
+- **objetoEscornabot.buzzer( pin_zumbador)**: configura el pin al que se conecta el zumbador.
+- **objetoEscornabot.tono(frecuencia, duración)**: emite un sonido en el zumbador configurado anteriormente, de una cierta frecuencia en Hz y duración en ms.
+- **objetoEscornabot.version()**: nos devuelve la versión de la librería utilizada.
 
-### Ejemplo de código de test
+
+### Ejemplo test
 ~~~
 #include <escornabot.h>
 
@@ -175,3 +188,114 @@ void invierteLed(int i) {
   }
 }
 ~~~
+
+### Ejemplo us ###
+~~~
+#include <escornabot.h>
+
+escornabot mirobot;
+boolean funciona = false;
+
+void setup() {
+  mirobot.us(11, 12); //configuramos los pines trigger y echo
+}
+
+void loop() {
+
+  compruebaBoton();
+
+  if (funciona == true) {
+    mirobot.driveD(-5, 10);
+
+    if (mirobot.distance() <= 15) {
+      mirobot.driveD (5, 10);
+      mirobot.turnA (-45, 10);
+    }
+  }
+
+  else if (funciona == false) {
+    mirobot.Stop();
+  }
+
+}
+
+void compruebaBoton () {
+  if (mirobot.pushButton() == right) {
+    funciona = !funciona;
+    delay (300);
+  }
+}
+~~~
+### Ejemplo line follower
+~~~
+#include <escornabot.h>
+
+escornabot miescorni;
+boolean funciona = false;
+
+void setup() {
+   miescorni.infrared(11,12);
+ }
+
+void loop() {
+
+  compruebaBoton();
+
+  if (funciona == true) {
+
+    if (miescorni.blackRight() && miescorni.whiteLeft()) {//si sensor izquierdo encuentra blanco
+      miescorni.turnA(-5, 10);//gira hacia la derecha en el sentido contrario a la marcha
+    }
+    if (miescorni.whiteRight() && miescorni.blackLeft()) {//si sensor derecho encuentra blanco
+      miescorni.turnA(5, 10);//gira hacia la izquierda en el sentido contrario a la marcha
+    }
+
+    if (miescorni.blackRight() && miescorni.blackLeft()) {//si los dos sensores encuentran negro
+      miescorni.driveD(-2, 13);//se mueve hacia delante en el sentido contrario a la marcha
+    }
+    if (miescorni.whiteRight() && miescorni.whiteLeft()) {//si los dos sensores encuentran blanco
+      miescorni.driveD(2, 13);//se mueve hacia detrás en el sentido contrario a la marcha
+    }
+
+  }
+
+  else if (funciona == false) {
+    miescorni.Stop();
+  }
+
+}
+
+void compruebaBoton () {
+  if (miescorni.pushButton() == right) {
+    funciona = !funciona;
+    delay (300);
+  }
+
+~~~
+### Ejemplo buzzer
+~~~
+#include <escornabot.h>
+
+escornabot miescorni;
+
+void setup() {
+
+  miescorni.buzzer(10);
+
+}
+
+void loop() {
+
+  for (int x = 0; x < 1000; x = x + 100) {
+    miescorni.tono(x, 500);
+  }
+
+  for (int x = 1000; x >=0; x = x - 100) {
+    miescorni.tono(x, 500);
+  }
+}
+~~~
+# Piezas para sensores
+
+Os enlazo el repositorio [Piezas escornabot](https://github.com/plunax/Piezas-escornanbot) de @plunax (*Prudencio Luna*) dónde están alojadas las piezas para poder incorporar sensores a escornabot.
+
