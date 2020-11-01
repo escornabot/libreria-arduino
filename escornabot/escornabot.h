@@ -74,7 +74,6 @@ int _echo;
 int _IRR;
 int _IRL;
 int _buzz;
-int buzz;
 
   protected:
 };
