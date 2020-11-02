@@ -299,3 +299,5 @@ void loop() {
 
 Os enlazo el repositorio [Piezas escornabot](https://github.com/plunax/Piezas-escornanbot) de @plunax (*Prudencio Luna*) dónde están alojadas las piezas para poder incorporar sensores a escornabot.
 
+#  Vídeos de funcionamiento
+[Lista de reproducción](https://www.youtube.com/playlist?list=PLMmcVmU6CWlLBAfntO2Pt8XanJAsduUnp)
