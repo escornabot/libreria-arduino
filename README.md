@@ -14,15 +14,14 @@
 - 0.12 (28/02/2017): se cambia sentido de marcha, se facilita pasar parámetros con diccionario, se añade función ledState y traducciones varias. Se adecua archivo de ejemplo.   
 - 0.11 (19/11/2017): se añade procedimiento blueT(), para conocer el dato recibido por bluetooth.
 - 0.1 (8/11/2017): primera versión del programa, incorpora control de motores paso a paso (avances, retrocesos, giros, parada), elección del tipo de excitación de bobinas, control de leds, zumbador y botonera.
-# Librería para arduino Escornabot
+# Librería de arduino para Escornabot
 Repositorio para albergar librería para programar de forma amigable escornabot.
 
-![](images/escornabot.jpg "escornabot")
+![](images/escornabot_p.jpg "escornabot")
 ## Antecedentes
 Unos de los problemas de escornabot era la ausencia de instrucciones amigables en arduino para controlar sus elementos (motores paso a paso, botonera, leds y zumbador, e incluso la adición de sensores), todo ello pensando en el acercamiento del uso de dicho robot para estudiantes de secundaria. Por este motivo desde el Club de Robótica de Granada nos planteamos desarrollar una librería para dicho fin.
 ## Librería
 La librería debemos cargar en arduino por los métodos tradicionales, incluyendo el zip o copiandola descomprimida en la carpeta "libraries" de arduino.
-### Procedimientos
 |Procedimientos | Elemento a controlar|
 |---|---|
 |**objetoEscornabot.drive (vueltas, velocidad)**: Sirve para avanzar o retroceder. Se mueve el número de vueltas indicado, si son negativas va en el sentido contrario. La velocidad se da rpm|Motores ![](images/pap_p.png "pap")|
