@@ -10,8 +10,8 @@
 - 0.20 (04/09/2020): sexta versión, puede controlar sensores como ultrasonidos e infrarrojos.
 - 0.15 (16/04/2019): quinta versión, se puede mover los motores mediante procedimiento de medio paso (tipo 3) y se corrigen fallos en constructor con parámetros para elegir modos de paso.
 - 0.14 (14/04/2019):cambio de nombre de procedimiento stop por Stop, se arregla procedimiento versión en .h, cambios en procedimiento pushButton, cambios en archivo de ejemplo. Limpieza de código.
-- 0.13 (08/03/2017): se añade funciones driveD (mueve por distancia en cm) y turnA (gira por ángulos).
-- 0.12 (28/02/2017): se cambia sentido de marcha, se facilita pasar parámetros con diccionario, se añade función ledState y traducciones varias. Se adecua archivo de ejemplo.   
+- 0.13 (08/03/2018): se añade funciones driveD (mueve por distancia en cm) y turnA (gira por ángulos).
+- 0.12 (28/02/2018): se cambia sentido de marcha, se facilita pasar parámetros con diccionario, se añade función ledState y traducciones varias. Se adecua archivo de ejemplo.   
 - 0.11 (19/11/2017): se añade procedimiento blueT(), para conocer el dato recibido por bluetooth.
 - 0.1 (8/11/2017): primera versión del programa, incorpora control de motores paso a paso (avances, retrocesos, giros, parada), elección del tipo de excitación de bobinas, control de leds, zumbador y botonera.
 # Librería de arduino para Escornabot
@@ -36,16 +36,16 @@ La librería debemos cargar en arduino por los métodos tradicionales, incluyend
 |**objetoEscornabot.buzzOFF ()**: apaga el zumbador.| Buzzer ![](images/buzzer_p.jpg "buzzer")|
 |**objetoEscornabot.pushButton()**: devuelve el valor del botón pulsado o la posición en inglés. 1 o forward (delantero), 3 o backward (trasero), 4 o right (derecho), 2 o left (izquierdo), 5 o central (central). |Pulsadores ![](images/push_p.jpg "pulsador")|
 |**objetoEscornabot.blueT()**: devuelve el valor numérico correspondiente a el carácter enviado por bluetooth a escornabot.|Bluetooth ![](images/bt_p.jpg "bt")|
-|**objetoEscornabot.infrared(pin izquierdo, pin derecho)**: configura los pines para los sensores izquierdo y derecho .| Infrarrojos ![](images/ir_p.jpg "ir")|
-|**objetoEscornabot.blackRight()**: devuelve true si el sensor derecho infrarrojo está a negro, false cuando no está a negro.| Infrarrojos ![](images/ir_p.jpg "ir")|
-|**objetoEscornabot.blackLeft()**: devuelve true si el sensor izquierdo infrarrojo está a negro, false cuando no está a negro.| Infrarrojos ![](images/ir_p.jpg "ir")|
-|**objetoEscornabot.whiteRight()**: devuelve true si el sensor derecho infrarrojo está a blanco, false cuando no está a blanco.| Infrarrojos ![](images/ir_p.jpg "ir")|
-|**objetoEscornabot.whiteLeft()**: devuelve true si el sensor izquierdo infrarrojo está a blanco, false cuando no está a blanco.| Infrarrojos ![](images/ir_p.jpg "ir")|
-|**objetoEscornabot.us(pin trigger, pin echo)**: configura los pines trigger y echo de un sensor de ultrasonidos.| Ultrasonidos ![](images/us_p.jpg "us")|
-|**objetoEscornabot.distance()**: devuelve la distancia en cm a la que detecta un objeto el sensor de ultrasonidos definido previamente.| Ultrasonidos ![](images/us_p.jpg "us")|
-|**objetoEscornabot.buzzer( pin_zumbador)**: configura el pin al que se conecta el zumbador.| Buzzer ![](images/buzzer_p.jpg "buzzer")|
-|**objetoEscornabot.tono(frecuencia, duración)**: emite un sonido en el zumbador configurado anteriormente, de una cierta frecuencia en Hz y duración en ms.| Buzzer ![](images/buzzer_p.jpg "buzzer")|
-|**objetoEscornabot.version()**: nos devuelve la versión de la librería utilizada.|Versión|
+|**objetoEscornabot.infrared (pin izquierdo, pin derecho)**: configura los pines para los sensores izquierdo y derecho .| Infrarrojos ![](images/ir_p.jpg "ir")|
+|**objetoEscornabot.blackRight ()**: devuelve true si el sensor derecho infrarrojo está a negro, false cuando no está a negro.| Infrarrojos ![](images/ir_p.jpg "ir")|
+|**objetoEscornabot.blackLeft ()**: devuelve true si el sensor izquierdo infrarrojo está a negro, false cuando no está a negro.| Infrarrojos ![](images/ir_p.jpg "ir")|
+|**objetoEscornabot.whiteRight ()**: devuelve true si el sensor derecho infrarrojo está a blanco, false cuando no está a blanco.| Infrarrojos ![](images/ir_p.jpg "ir")|
+|**objetoEscornabot.whiteLeft ()**: devuelve true si el sensor izquierdo infrarrojo está a blanco, false cuando no está a blanco.| Infrarrojos ![](images/ir_p.jpg "ir")|
+|**objetoEscornabot.us (pin trigger, pin echo)**: configura los pines trigger y echo de un sensor de ultrasonidos.| Ultrasonidos ![](images/us_p.jpg "us")|
+|**objetoEscornabot.distance ()**: devuelve la distancia en cm a la que detecta un objeto el sensor de ultrasonidos definido previamente.| Ultrasonidos ![](images/us_p.jpg "us")|
+|**objetoEscornabot.buzzer (pin_zumbador)**: configura el pin al que se conecta el zumbador.| Buzzer ![](images/buzzer_p.jpg "buzzer")|
+|**objetoEscornabot.tono (frecuencia, duración)**: emite un sonido en el zumbador configurado anteriormente, de una cierta frecuencia en Hz y duración en ms.| Buzzer ![](images/buzzer_p.jpg "buzzer")|
+|**objetoEscornabot.version ()**: nos devuelve la versión de la librería utilizada.|Versión|
 
 ### Ejemplo test
 ~~~
