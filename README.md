@@ -23,29 +23,30 @@ Unos de los problemas de escornabot era la ausencia de instrucciones amigables e
 ## Librería
 La librería debemos cargar en arduino por los métodos tradicionales, incluyendo el zip o copiandola descomprimida en la carpeta "libraries" de arduino.
 ### Procedimientos
-- **objetoEscornabot.drive (vueltas, velocidad)**: Sirve para avanzar o retroceder. Se mueve el número de vueltas indicado, si son negativas va en el sentido contrario. La velocidad se da rpm
-- **objetoEscornabot.driveD (distancia, velocidad)**: Igual que el anterior pero le pasamos la cantidad de cm que queremos que se mueva.
-- **objetoEscornabot.turn (vueltas, velocidad)**: Sirve para girar. Se indica como antes el número de vueltas o fracción a girar, si son positivas gira en un sentido y negativas en el contrario. La velocidad se da en rpm.
-- **objetoEscornabot.turnA (angulo, velocidad)**: Igual que el anterior pero el giro se le da en grados (de 0º a 360º).
-- **objetoEscornabot.Stop ()**: detiene los dos motores.
-- **objetoEscornabot.ledON (número de led o posición en inglés)**: sirve para encender los leds de escornabot. Los leds son: 1 o forward (azul, posición delantera), 3 o backward (ámbar, posición trasera), 4 o right (verde, posición derecha), y 2 o left (rojo, posición izquierda).
-- **objetoEscornabot.ledOFF (número de led o posición en inglés)**: sirve para apagar los leds de escornabot.
-- **objetoEscornabot.ledState (número de led o posición en inglés)**: devuelve el estado del led, encendido (1 o HIGH) o apagado (0 o LOW).
-- **objetoEscornabot.buzzON ()**: enciende el zumbador.
-- **objetoEscornabot.buzzOFF ()**: apaga el zumbador.
-- **objetoEscornabot.pushButton()**: devuelve el valor del botón pulsado o la posición en inglés. 1 o forward (delantero), 3 o backward (trasero), 4 o right (derecho), 2 o left (izquierdo), 5 o central (central).
-- **objetoEscornabot.blueT()**: devuelve el valor numérico correspondiente a el carácter enviado por bluetooth a escornabot.
-- **objetoEscornabot.infrared(pin izquierdo, pin derecho)**: configura los pines para los sensores izquierdo y derecho .
-- **objetoEscornabot.blackRight()**: devuelve true si el sensor derecho infrarrojo está a negro, false cuando no está a negro.
-- **objetoEscornabot.blackLeft()**: devuelve true si el sensor izquierdo infrarrojo está a negro, false cuando no está a negro.
-- **objetoEscornabot.whiteRight()**: devuelve true si el sensor derecho infrarrojo está a blanco, false cuando no está a blanco.
-- **objetoEscornabot.whiteLeft()**: devuelve true si el sensor izquierdo infrarrojo está a blanco, false cuando no está a blanco.
-- **objetoEscornabot.us(pin trigger, pin echo)**: configura los pines trigger y echo de un sensor de ultrasonidos.
-- **objetoEscornabot.distance()**: devuelve la distancia en cm a la que detecta un objeto el sensor de ultrasonidos definido previamente.
-- **objetoEscornabot.buzzer( pin_zumbador)**: configura el pin al que se conecta el zumbador.
-- **objetoEscornabot.tono(frecuencia, duración)**: emite un sonido en el zumbador configurado anteriormente, de una cierta frecuencia en Hz y duración en ms.
-- **objetoEscornabot.version()**: nos devuelve la versión de la librería utilizada.
-
+|Procedimientos | Elemento a controlar|
+|---|---|
+|**objetoEscornabot.drive (vueltas, velocidad)**: Sirve para avanzar o retroceder. Se mueve el número de vueltas indicado, si son negativas va en el sentido contrario. La velocidad se da rpm|Motores ![](images/pap_p.png "pap")|
+|**objetoEscornabot.driveD (distancia, velocidad)**: Igual que el anterior pero le pasamos la cantidad de cm que queremos que se mueva.|Motores ![](images/pap_p.png "pap")|
+|**objetoEscornabot.turn (vueltas, velocidad)**: Sirve para girar. Se indica como antes el número de vueltas o fracción a girar, si son positivas gira en un sentido y negativas en el contrario. La velocidad se da en rpm.|Motores ![](images/pap_p.png "pap")|
+|**objetoEscornabot.turnA (angulo, velocidad)**: Igual que el anterior pero el giro se le da en grados (de 0º a 360º).|Motores ![](images/pap_p.png "pap")|
+|**objetoEscornabot.Stop ()**: detiene los dos motores.| Motores ![](images/pap_p.png "pap")|
+|**objetoEscornabot.ledON (número de led o posición en inglés)**: sirve para encender los leds de escornabot. Los leds son: 1 o forward (azul, posición delantera), 3 o backward (ámbar, posición trasera), 4 o right (verde, posición derecha), y 2 o left (rojo, posición izquierda).| Leds ![](images/led_p.png "led")|
+|**objetoEscornabot.ledOFF (número de led o posición en inglés)**: sirve para apagar los leds de escornabot.| Leds ![](images/led_p.png "led")|
+|**objetoEscornabot.ledState (número de led o posición en inglés)**: devuelve el estado del led, encendido (1 o HIGH) o apagado (0 o LOW).| Leds ![](images/led_p.png "led")|
+|**objetoEscornabot.buzzON ()**: enciende el zumbador.| Buzzer ![](images/buzzer_p.jpg "buzzer")|
+|**objetoEscornabot.buzzOFF ()**: apaga el zumbador.| Buzzer ![](images/buzzer_p.jpg "buzzer")|
+|**objetoEscornabot.pushButton()**: devuelve el valor del botón pulsado o la posición en inglés. 1 o forward (delantero), 3 o backward (trasero), 4 o right (derecho), 2 o left (izquierdo), 5 o central (central). |Pulsadores ![](images/push_p.jpg "pulsador")|
+|**objetoEscornabot.blueT()**: devuelve el valor numérico correspondiente a el carácter enviado por bluetooth a escornabot.|Bluetooth ![](images/bt_p.jpg "bt")|
+|**objetoEscornabot.infrared(pin izquierdo, pin derecho)**: configura los pines para los sensores izquierdo y derecho .| Infrarrojos ![](images/ir_p.jpg "ir")|
+|**objetoEscornabot.blackRight()**: devuelve true si el sensor derecho infrarrojo está a negro, false cuando no está a negro.| Infrarrojos ![](images/ir_p.jpg "ir")|
+|**objetoEscornabot.blackLeft()**: devuelve true si el sensor izquierdo infrarrojo está a negro, false cuando no está a negro.| Infrarrojos ![](images/ir_p.jpg "ir")|
+|**objetoEscornabot.whiteRight()**: devuelve true si el sensor derecho infrarrojo está a blanco, false cuando no está a blanco.| Infrarrojos ![](images/ir_p.jpg "ir")|
+|**objetoEscornabot.whiteLeft()**: devuelve true si el sensor izquierdo infrarrojo está a blanco, false cuando no está a blanco.| Infrarrojos ![](images/ir_p.jpg "ir")|
+|**objetoEscornabot.us(pin trigger, pin echo)**: configura los pines trigger y echo de un sensor de ultrasonidos.| Ultrasonidos ![](images/us_p.jpg "us")|
+|**objetoEscornabot.distance()**: devuelve la distancia en cm a la que detecta un objeto el sensor de ultrasonidos definido previamente.| Ultrasonidos ![](images/us_p.jpg "us")|
+|**objetoEscornabot.buzzer( pin_zumbador)**: configura el pin al que se conecta el zumbador.| Buzzer ![](images/buzzer_p.jpg "buzzer")|
+|**objetoEscornabot.tono(frecuencia, duración)**: emite un sonido en el zumbador configurado anteriormente, de una cierta frecuencia en Hz y duración en ms.| Buzzer ![](images/buzzer_p.jpg "buzzer")|
+|**objetoEscornabot.version()**: nos devuelve la versión de la librería utilizada.|Versión|
 
 ### Ejemplo test
 ~~~
